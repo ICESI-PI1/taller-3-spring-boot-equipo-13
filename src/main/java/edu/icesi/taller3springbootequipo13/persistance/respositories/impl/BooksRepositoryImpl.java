@@ -1,6 +1,8 @@
 package edu.icesi.taller3springbootequipo13.persistance.respositories.impl;
 
+import edu.icesi.taller3springbootequipo13.persistance.models.Author;
 import edu.icesi.taller3springbootequipo13.persistance.models.Book;
+import edu.icesi.taller3springbootequipo13.persistance.respositories.IAuthorsRepository;
 import edu.icesi.taller3springbootequipo13.persistance.respositories.IBooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,9 @@ import java.util.Optional;
 @Repository
 public class BooksRepositoryImpl implements IBooksRepository {
 
+    @Autowired
+    private IAuthorsRepository authorsRepository;
+
     List<Book> books;
 
     public BooksRepositoryImpl(){
@@ -20,16 +25,22 @@ public class BooksRepositoryImpl implements IBooksRepository {
     }
 
     @Override
-    public Book save(Book book) {
+    public Optional<Book> save(Book book) {
         Book existingProject = findById(book.getId()).orElse(null);
         if (existingProject == null){
-            books.add(book);
+            Optional<Author> author = authorsRepository.findById(book.getId());
+            if(author.isEmpty()) {
+                return Optional.empty();
+            } else {
+                books.add(book);
+            }
+
         }else{
             books.remove(existingProject);
             Book newBook = book;
             books.add(newBook);
         }
-        return book;
+        return Optional.of(book);
     }
 
     @Override
@@ -53,13 +64,27 @@ public class BooksRepositoryImpl implements IBooksRepository {
     }
 
     @Override
-    public Optional<Book> edit(Book book) {
-        if(findById(book.getId()).isEmpty()){
+    public Optional<Book> edit(Long id, Book book) {
+        if(findById(id).isEmpty()){
             return Optional.empty();
         } else {
-            delete(book.getId());
+            delete(id);
             books.add(book);
             return Optional.of(book);
         }
+    }
+
+    @Override
+    public List<Book> findBooksByAuthor(Long id) {
+
+        List<Book> books = getAll();
+        List<Book> booksByAuthor = new ArrayList<>();
+        for (Book book : books) {
+            if (Objects.equals(book.getAuthor().getId(), id)) {
+                booksByAuthor.add(book);
+            }
+        }
+
+        return booksByAuthor;
     }
 }

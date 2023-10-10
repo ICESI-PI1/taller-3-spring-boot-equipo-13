@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IAuthorsRepository {
-    Author save(Author author);
-    Book addBookToAuthor(Book book, Long idAuthor);
+    Optional<Author> save(Author author);
     Optional<Author> findById(Long id);
     Optional<Author> delete(Long id);
     List<Author> getAll();
-    List<Book> findBooksByAuthor(Long id);
 }

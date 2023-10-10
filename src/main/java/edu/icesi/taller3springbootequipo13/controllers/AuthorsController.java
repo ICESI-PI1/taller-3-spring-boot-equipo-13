@@ -3,18 +3,23 @@ package edu.icesi.taller3springbootequipo13.controllers;
 import edu.icesi.taller3springbootequipo13.persistance.models.Author;
 import edu.icesi.taller3springbootequipo13.persistance.models.Book;
 import edu.icesi.taller3springbootequipo13.service.IAuthorsService;
+import edu.icesi.taller3springbootequipo13.service.IBooksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "authors")
+@RequestMapping("/autores")
 
 public class AuthorsController {
 
     @Autowired
     private IAuthorsService authorsService;
+
+    @Autowired
+    private IBooksService booksService;
 
     @GetMapping("")
     public List<Author> getallAuthors() {
@@ -27,13 +32,14 @@ public class AuthorsController {
     }
 
     @PostMapping("")
-    public Author newAuthor(@RequestBody Author author) {
+    public Optional<Author> newAuthor(@RequestBody Author author) {
+        System.out.println(author);
         return authorsService.save(author);
     }
 
     @PutMapping("/{id}")
     public Author editAuthor(@PathVariable Long id, @RequestBody Author author) {
-        return authorsService.edit(id, author).orElse(null);
+        return authorsService.edit(id, author);
     }
 
     @DeleteMapping("/{id}")
@@ -43,7 +49,7 @@ public class AuthorsController {
 
     @GetMapping("/{id}/libros")
     public List<Book> booksByAuthor(@PathVariable Long id) {
-        return authorsService.
+        return booksService.findBooksByAuthor(id);
     }
 
 }

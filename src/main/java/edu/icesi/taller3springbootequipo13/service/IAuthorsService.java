@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IAuthorsService {
-    Author save(Author book);
+    Optional<Author> save(Author author);
     List<Author> getAll();
-    Optional<Author> edit(Author book);
-    Optional<Author> findById(Long id, Author author);
+    Author edit(Long id, Author author);
+    Optional<Author> findById(Long id);
     Optional<Author> delete(Long id);
-    List<Book> findBooksByAuthor(Long id);
 }

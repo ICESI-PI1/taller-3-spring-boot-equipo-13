@@ -6,28 +6,30 @@ import edu.icesi.taller3springbootequipo13.service.IBooksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class BooksServiceImpl implements IBooksService {
 
     @Autowired
-    private IBooksRepository repository;
+    private IBooksRepository booksRepository;
 
     @Override
-    public Book save(Book book) {
-        return null;
+    public Optional<Book> save(Book book) {
+        return booksRepository.save(book);
     }
 
     @Override
     public List<Book> getAll() {
-        return null;
+        return booksRepository.getAll();
     }
 
     @Override
-    public Optional<Book> edit(Book book) {
-        return Optional.empty();
+    public Optional<Book> edit(Long id, Book book) {
+        return booksRepository.edit(id, book);
     }
 
     @Override
@@ -38,5 +40,19 @@ public class BooksServiceImpl implements IBooksService {
     @Override
     public Optional<Book> delete(Long id) {
         return Optional.empty();
+    }
+
+    @Override
+    public List<Book> findBooksByAuthor(Long id) {
+
+        List<Book> books = booksRepository.getAll();
+        List<Book> booksByAuthor = new ArrayList<>();
+        for (Book book : books) {
+            if (Objects.equals(book.getAuthor().getId(), id)) {
+                booksByAuthor.add(book);
+            }
+        }
+
+        return booksByAuthor;
     }
 }

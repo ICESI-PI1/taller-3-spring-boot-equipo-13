@@ -3,13 +3,18 @@ package edu.icesi.taller3springbootequipo13.persistance.respositories.impl;
 import edu.icesi.taller3springbootequipo13.persistance.models.Author;
 import edu.icesi.taller3springbootequipo13.persistance.models.Book;
 import edu.icesi.taller3springbootequipo13.persistance.respositories.IAuthorsRepository;
+import edu.icesi.taller3springbootequipo13.persistance.respositories.IBooksRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Repository
 public class AuthorsRepositoryImpl implements IAuthorsRepository {
+
 
     List<Author> authors;
 
@@ -19,7 +24,7 @@ public class AuthorsRepositoryImpl implements IAuthorsRepository {
 
 
     @Override
-    public Author save(Author author) {
+    public Optional<Author> save(Author author) {
         Author exist= findById(author.getId()).orElse(null);
         if(exist==null){
             authors.add(author);
@@ -29,18 +34,10 @@ public class AuthorsRepositoryImpl implements IAuthorsRepository {
             authors.add(newAuthor);
         }
 
-        return author;
+        return Optional.of(author);
     }
 
-    @Override
-    public Book addBookToAuthor(Book book, Long idAuthor) {
-        Author author= findById(idAuthor).orElse(null);
-        if(author!=null){
-            author.getBooks().add(book);
-        }
 
-        return book;
-    }
 
     @Override
     public Optional<Author> findById(Long id) {
@@ -62,8 +59,4 @@ public class AuthorsRepositoryImpl implements IAuthorsRepository {
         return authors;
     }
 
-    @Override
-    public List<Book> findBooksByAuthor(Long id) {
-        return null;6
-    }
 }
