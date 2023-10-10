@@ -34,12 +34,12 @@ public class BooksServiceImpl implements IBooksService {
 
     @Override
     public Optional<Book> findById(Long id) {
-        return Optional.empty();
+        return booksRepository.findById(id);
     }
 
     @Override
     public Optional<Book> delete(Long id) {
-        return Optional.empty();
+        return booksRepository.delete(id);
     }
 
     @Override

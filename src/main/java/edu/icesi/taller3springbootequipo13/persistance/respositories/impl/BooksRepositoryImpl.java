@@ -28,8 +28,8 @@ public class BooksRepositoryImpl implements IBooksRepository {
     public Optional<Book> save(Book book) {
         Book existingProject = findById(book.getId()).orElse(null);
         if (existingProject == null){
-            Optional<Author> author = authorsRepository.findById(book.getId());
-            if(author.isEmpty()) {
+            Author author = authorsRepository.findById(book.getAuthor().getId()).orElse(null);
+            if(author==null) {
                 return Optional.empty();
             } else {
                 books.add(book);
@@ -68,9 +68,15 @@ public class BooksRepositoryImpl implements IBooksRepository {
         if(findById(id).isEmpty()){
             return Optional.empty();
         } else {
-            delete(id);
-            books.add(book);
-            return Optional.of(book);
+            Author author = authorsRepository.findById(book.getAuthor().getId()).orElse(null);
+            if(author==null) {
+                return Optional.empty();
+            } else {
+                delete(id);
+                books.add(book);
+                return Optional.of(book);
+            }
+
         }
     }
 

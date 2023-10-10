@@ -51,7 +51,7 @@ public class AuthorsServiceImpl implements IAuthorsService {
 
     @Override
     public Optional<Author> delete(Long id) {
-        return authorsRepository.findById(id);
+        return authorsRepository.delete(id);
     }
 
 

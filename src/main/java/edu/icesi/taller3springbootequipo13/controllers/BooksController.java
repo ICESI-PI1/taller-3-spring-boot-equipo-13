@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "libros")
+@RequestMapping( "/libros")
 public class BooksController {
 
     private IBooksService service;
@@ -32,7 +32,7 @@ public class BooksController {
 
     @PostMapping()
     public Optional<Book> create(@RequestBody Book book){
-        if(this.service.findById(book.getId()).isPresent())
+        if(!this.service.findById(book.getId()).isPresent())
             return this.service.save(book);
         throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "entity not found"
