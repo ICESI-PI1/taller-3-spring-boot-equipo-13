@@ -65,7 +65,7 @@ public class BooksRepositoryImpl implements IBooksRepository {
 
     @Override
     public Optional<Book> edit(Long id, Book book) {
-        if(findById(id).isEmpty()){
+        if(!findById(id).isPresent()){
             return Optional.empty();
         } else {
             Author author = authorsRepository.findById(book.getAuthor().getId()).orElse(null);
