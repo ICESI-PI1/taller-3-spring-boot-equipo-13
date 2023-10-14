@@ -28,20 +28,17 @@ public class AuthorsServiceImpl implements IAuthorsService {
     }
 
     @Override
-    public Author edit(Long id, Author author) {
+    public Author edit(Long id, Author newAuthor) throws AutorNotFoundException {
         List<Author> authors = authorsRepository.getAll();
-
         for(int i=0; i<authors.size(); i++){
             if(authors.get(i).getId()==id){
-                authors.remove(i);
-                break;
+                Author author = authors.get(i);
+                author.setName(newAuthor.getName());
+                author.setNationality(newAuthor.getNationality());
+                return author;
             }
         }
-
-        authors.add(author);
-
-        return author;
-
+        throw new AutorNotFoundException("No se encontró un autor con el ID especificado: " + id);
     }
 
     @Override
