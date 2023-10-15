@@ -4,7 +4,7 @@ import edu.icesi.taller3springbootequipo13.persistance.models.Author;
 import edu.icesi.taller3springbootequipo13.persistance.models.Book;
 import edu.icesi.taller3springbootequipo13.service.IAuthorsService;
 import edu.icesi.taller3springbootequipo13.service.IBooksService;
-import edu.icesi.taller3springbootequipo13.service.impl.AutorNotFoundException;
+import edu.icesi.taller3springbootequipo13.service.impl.AuthorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,7 @@ public class AuthorsController {
     }
 
     @PutMapping("/{id}")
-    public Author editAuthor(@PathVariable Long id, @RequestBody Author author) throws AutorNotFoundException {
+    public Author editAuthor(@PathVariable Long id, @RequestBody Author author) throws AuthorNotFoundException {
         return authorsService.edit(id, author);
     }
 

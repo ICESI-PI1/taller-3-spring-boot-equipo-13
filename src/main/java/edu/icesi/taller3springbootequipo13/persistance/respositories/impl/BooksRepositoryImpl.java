@@ -4,6 +4,7 @@ import edu.icesi.taller3springbootequipo13.persistance.models.Author;
 import edu.icesi.taller3springbootequipo13.persistance.models.Book;
 import edu.icesi.taller3springbootequipo13.persistance.respositories.IAuthorsRepository;
 import edu.icesi.taller3springbootequipo13.persistance.respositories.IBooksRepository;
+import edu.icesi.taller3springbootequipo13.service.impl.AuthorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,21 +27,13 @@ public class BooksRepositoryImpl implements IBooksRepository {
 
     @Override
     public Optional<Book> save(Book book) {
-        Book existingProject = findById(book.getId()).orElse(null);
-        if (existingProject == null){
-            Author author = authorsRepository.findById(book.getAuthor().getId()).orElse(null);
-            if(author==null) {
-                return Optional.empty();
-            } else {
-                books.add(book);
-            }
-
-        }else{
-            books.remove(existingProject);
-            Book newBook = book;
-            books.add(newBook);
+        Optional<Book> existingBook = findById(book.getId());
+        if(!(existingBook.isPresent()) && authorsRepository.findById(book.getAuthorId()).isPresent() ){
+            books.add(book);
+            return Optional.of(book);
+        } else {
+            return Optional.empty();
         }
-        return Optional.of(book);
     }
 
     @Override
@@ -68,7 +61,7 @@ public class BooksRepositoryImpl implements IBooksRepository {
         if(!findById(id).isPresent()){
             return Optional.empty();
         } else {
-            Author author = authorsRepository.findById(book.getAuthor().getId()).orElse(null);
+            Author author = authorsRepository.findById(book.getAuthorId()).orElse(null);
             if(author==null) {
                 return Optional.empty();
             } else {
@@ -86,7 +79,7 @@ public class BooksRepositoryImpl implements IBooksRepository {
         List<Book> books = getAll();
         List<Book> booksByAuthor = new ArrayList<>();
         for (Book book : books) {
-            if (Objects.equals(book.getAuthor().getId(), id)) {
+            if (Objects.equals(book.getAuthorId(), id)) {
                 booksByAuthor.add(book);
             }
         }

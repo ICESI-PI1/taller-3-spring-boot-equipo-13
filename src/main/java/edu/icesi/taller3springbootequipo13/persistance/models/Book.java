@@ -11,7 +11,7 @@ public class Book {
     private long id;
     private String title;
     private Date publicationDate;
-    private Author author;
+    private Long authorId;
 
     public Book (){
 

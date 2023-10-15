@@ -48,7 +48,7 @@ public class BooksServiceImpl implements IBooksService {
         List<Book> books = booksRepository.getAll();
         List<Book> booksByAuthor = new ArrayList<>();
         for (Book book : books) {
-            if (Objects.equals(book.getAuthor().getId(), id)) {
+            if (Objects.equals(book.getAuthorId(), id)) {
                 booksByAuthor.add(book);
             }
         }

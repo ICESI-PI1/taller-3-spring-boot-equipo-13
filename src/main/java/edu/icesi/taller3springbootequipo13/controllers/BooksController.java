@@ -35,7 +35,7 @@ public class BooksController {
         if(!this.service.findById(book.getId()).isPresent())
             return this.service.save(book);
         throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "entity not found"
+                HttpStatus.NOT_FOUND, "Entity already in the program"
         );
 
     }
