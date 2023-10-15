@@ -27,11 +27,15 @@ public class BooksRepositoryImpl implements IBooksRepository {
 
     @Override
     public Optional<Book> save(Book book) {
-        Optional<Book> existingBook = findById(book.getId());
-        if(!(existingBook.isPresent()) && authorsRepository.findById(book.getAuthorId()).isPresent() ){
+        Book existingBook = findById(book.getId()).orElse(null);
+        Author authorsId = authorsRepository.findById(book.getAuthorId()).orElse(null);
+
+        if((existingBook == null) && (authorsId != null) ){
+            //System.out.println("AYUDAAA");
             books.add(book);
             return Optional.of(book);
         } else {
+            //System.out.println("NONAS");
             return Optional.empty();
         }
     }
